@@ -1,0 +1,30 @@
+# docker compose exec path_planning bash
+# docker compose run --rm path_planning bash
+
+services:
+  path_planning:
+    build:
+      context: docker
+      dockerfile: Dockerfile
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+    image: path_planning-image
+    container_name: path_planning-container
+    privileged: true
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - XAUTHORITY=/tmp/.docker.xauth
+      - XDG_RUNTIME_DIR=/run/user/1000
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/tmp/.X11-unix:/tmp/.X11-unix:rw"
+      - "/tmp/.docker.xauth:/tmp/.docker.xauth"
+      - ${PWD}/path_planning:/home/ubuntu/path_planning:rw
+    network_mode: host
+    tty: true
+    stdin_open: true
+    working_dir: /home/ubuntu
+    command: /bin/bash
+    restart: unless-stopped
