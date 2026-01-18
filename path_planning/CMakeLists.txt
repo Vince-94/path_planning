@@ -68,3 +68,5 @@ find_library(SDL2_GFX_LIBRARY
 ###########
 
 include_directories(${PROJECT_SOURCE_DIR}/utils/include)
+
+add_subdirectory(graph_based_algo/bfs)
